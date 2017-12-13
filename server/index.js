@@ -1,37 +1,67 @@
+import express from 'express';
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+import { matchRoutes } from 'react-router-config';
+import bodyParser from 'body-parser';
+import {searchTweets, formatTweets} from './twitter';
+import renderer from './renderer.js';
+import Routes from '../src/routes';
+import createStore from '../src/redux/store/createStore';
+import { error } from 'util';
 
-var express = require('express');
-var bodyParser = require('body-parser');
-var request = require('request');
-var searchTweets = require('./twitter/index');
+const app = express();
+let next_query = '?q=nando moura';
 
-
-var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+app.use(express.static('buildClient'));
 
-var next_query = '?q=nando moura';
+app.get('/', (req, res) => {
+  const store = createStore();
 
-app.get('/search', function (req, res) {  
-    searchTweets(next_query)
-        .then(response => {
-            next_query = response.data.search_metadata.next_results;
-            res.send(response.data);
-        });
+  const promises = matchRoutes(Routes, req.path).map(({ route }) => {
+    return route.loadData ? route.loadData(store) : null;
+  });
+
+  Promise.all(promises).then(() => {
+    res.send(renderer(req, store));
+  });
+});
+
+app.get('/search', function (req, res) {
+  console.log('====================================');
+  console.log('app.get');
+  console.log('====================================');
+  searchTweets(next_query)
+    .then(response => {
+      if (response.data) {
+        next_query = response.data.search_metadata.next_results;
+        const tweets = formatTweets(JSON.stringify(response.data.statuses));
+        res.send(tweets);
+      } else {
+        res.send('Nenhum resultado encontrado');
+      }
+    })
 });
 
 app.post('/search', function (req, res) {
-    console.log(req.body.query);
-    
-    searchTweets(next_query)
-        .then(response => {
-            //console.log(response.data.search_metadata.next_results);
-            next_query = response.data.search_metadata.next_results;            
-            res.send(response.data);
-        });
+  console.log('====================================');
+  console.log('app.post');
+  console.log('====================================');
+  searchTweets(next_query)
+    .then(response => {
+      if (response.data) {
+        next_query = response.data.search_metadata.next_results;
+        const tweets = formatTweets(response.data.statuses);
+        res.send(tweets);
+      } else {
+        res.send('Nenhum resultado encontrado');
+      }
+    })
 });
 
-app.listen(3000, function () {
-    console.log("My API is running...");
+app.listen(3000, () => {
+  console.log('listening on port 3000');
 });
