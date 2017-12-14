@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import styles from './styles.scss';
+console.log('====================================');
+console.log(styles);
+console.log('====================================');
 
 const regex = /([@]+[A-Za-z0-9_]+)|([A-Za-z]+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&~\?\/.=]+)|([#]+[A-Za-z0-9_]+)/g;
 
@@ -61,7 +65,7 @@ class Tweet extends Component {
   };
 
   render() {
-    return <div>{this.state.tweet}</div>
+    return <div className={styles.tweet}>{this.state.tweet}</div>
   }
 }
 

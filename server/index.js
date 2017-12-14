@@ -9,6 +9,14 @@ import Routes from '../src/routes';
 import createStore from '../src/redux/store/createStore';
 import { error } from 'util';
 
+import webpack from 'webpack';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
+import config from '../webpack.client';
+const compiler = webpack(config);
+
+const webpackConfig = require('../webpack.client');
+
 const app = express();
 let next_query = '?q=@carolmoreira3&result_type=recent';
 
@@ -16,6 +24,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
+const options = {
+  quiet: true,
+  noInfo: true,
+  hot: true,
+  publicPath: config.output.publicPath,
+  headers: { 'Access-Control-Allow-Origin': '*' },
+  stats: { colors: true }
+};
+
+app.use(webpackDevMiddleware(compiler, options));
+app.use(webpackHotMiddleware(compiler));
+
 app.use(express.static('buildClient'));
 
 app.get('/', (req, res) => {
