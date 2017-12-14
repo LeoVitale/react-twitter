@@ -29,8 +29,7 @@ const options = {
   quiet: true,
   noInfo: true,
   hot: true,
-  publicPath: config.output.publicPath,
-  contentBase: config.output.publicPath,
+  host: "localhost",
   stats: { colors: true }
 };
 

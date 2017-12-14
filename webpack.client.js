@@ -11,9 +11,19 @@ const config = {
   name: 'client',
   target: 'web',
   devtool: 'inline-source-map',
+  devServer: {
+    host: "localhost",
+    port: 3001,
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    },
+    historyApiFallback: true,
+    hot: true,
+  },
   entry: [
     'babel-polyfill',
     'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
+    "webpack/hot/only-dev-server",
     'react-hot-loader/patch',
     './src/index.js'
   ],

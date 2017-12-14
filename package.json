@@ -7,7 +7,7 @@
     "dev": "npm-run-all --parallel dev:*",
     "dev:server": "nodemon --watch build --exec \"node buildServer/main.js\"",
     "dev:build-server": "webpack --config webpack.server.js --watch",
-    "dev:build-client": "webpack --config webpack.client.js --watch",
+    "dev:build-client": "webpack-dev-server --config webpack.client.js --watch",
     "clean": "rimraf buildServer buildClient"
   },
   "author": "",
