@@ -33,5 +33,6 @@ render(RenderRoutes);
 
 // Webpack Hot Module Replacement API
 if (module.hot) {
+  console.log('Accepting the updated printMe module!');
   module.hot.accept('./renderRoutes.js', () => { render(RenderRoutes) });
 }

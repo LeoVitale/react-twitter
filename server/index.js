@@ -30,7 +30,7 @@ const options = {
   noInfo: true,
   hot: true,
   publicPath: config.output.publicPath,
-  headers: { 'Access-Control-Allow-Origin': '*' },
+  contentBase: config.output.publicPath,
   stats: { colors: true }
 };
 

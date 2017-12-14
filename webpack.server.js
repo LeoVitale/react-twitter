@@ -77,7 +77,9 @@ const config = {
       maxChunks: 1
     }),
     new ExtractTextPlugin({
-      filename: "bundle.css",
+      filename: "main.css",
+      allChunks: true,
+      disable: false
     })
   ]
 };

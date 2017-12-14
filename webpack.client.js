@@ -10,14 +10,13 @@ const config = {
   // server application
   name: 'client',
   target: 'web',
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
   entry: [
     'babel-polyfill',
+    'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
     'react-hot-loader/patch',
     './src/index.js'
   ],
-  // Tell webpack where to put the output file
-  // that is generated
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'buildClient'),
@@ -43,8 +42,6 @@ const config = {
       },
       {
         test: /\.[s]css$/,
-        include: __dirname + '/src',
-        exclude: /node_modules/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [{
@@ -78,7 +75,7 @@ const config = {
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new ExtractTextPlugin({
-      filename: "bundle.css",
+      filename: "[name].css",
       allChunks: true,
       disable: false
     })
