@@ -12,7 +12,7 @@ const config = {
   devtool: 'eval',
   entry: ['babel-polyfill', './server/index.js'],
   output: {
-    filename: '[name].js',
+    filename: 'server.js',
     path: path.resolve(__dirname, 'buildServer'),
     publicPath: "/buildServer/"
   },

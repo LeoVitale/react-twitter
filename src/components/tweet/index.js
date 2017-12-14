@@ -65,7 +65,7 @@ class Tweet extends Component {
   };
 
   render() {
-    return <div className={styles.tweet}>{this.state.tweet}</div>
+    return <div className={styles.tweet}>{this.state.tweet}ssssss</div>
   }
 }
 

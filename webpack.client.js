@@ -22,15 +22,15 @@ const config = {
   },
   entry: [
     'babel-polyfill',
-    'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
+    "react-hot-loader/patch",
+    "webpack-dev-server/client?http://localhost:3001",
     "webpack/hot/only-dev-server",
-    'react-hot-loader/patch',
     './src/index.js'
   ],
   output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, 'buildClient'),
-    publicPath: "/buildClient/"
+    path: path.join(__dirname, "buildServer"),
+    publicPath: "http://localhost:3001/",
+    filename: "client.js",
   },
   module: {
     rules: [{

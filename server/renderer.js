@@ -26,7 +26,7 @@ export default (req, store) => {
       <body>
         <div id="root">${content}</div>
         <script>window.REDUX_STATE = ${stateJson}</script>
-        <script src="main.js"></script>
+        <script src="http://localhost:3001/client.js"></script>
       </body>
     </html>
   `;
