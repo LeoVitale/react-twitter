@@ -10,10 +10,6 @@ const config = {
   name: 'server',
   target: 'node',
   devtool: 'eval',
-
-
-  // Tell webpack the root file of our
-  // server application
   entry: ['babel-polyfill', './server/index.js'],
   output: {
     filename: '[name].js',
@@ -52,9 +48,9 @@ const config = {
               options: {
                 // If you are having trouble with urls not resolving add this setting.
                 // See https://github.com/webpack-contrib/css-loader#url
-                importLoaders: 1,
+                importLoaders: 2,
+                minimize: false,
                 sourceMap: true,
-                context: path.resolve('./src'),
                 localIdentName: '[name]__[local]--[hash:base64:5]',
                 modules: true
               }
@@ -77,14 +73,11 @@ const config = {
   },
   externals: [webpackNodeExternals()],
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 1
     }),
     new ExtractTextPlugin({
       filename: "bundle.css",
-      allChunks: true,
-      disable: false
     })
   ]
 };

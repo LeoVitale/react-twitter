@@ -13,7 +13,6 @@ const config = {
   devtool: 'source-map',
   entry: [
     'babel-polyfill',
-
     'react-hot-loader/patch',
     './src/index.js'
   ],
@@ -53,7 +52,7 @@ const config = {
               options: {
                 // If you are having trouble with urls not resolving add this setting.
                 // See https://github.com/webpack-contrib/css-loader#url
-                importLoaders: 1,
+                importLoaders: 2,
                 minimize: false,
                 sourceMap: true,
                 localIdentName: '[name]__[local]--[hash:base64:5]',
