@@ -9,13 +9,20 @@ import { AppContainer } from 'react-hot-loader';
 import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction';
 import reducers from './redux/modules';
 import RenderRoutes from './renderRoutes';
+import {loadState, saveState} from './utils/localStorage';
 import './sass/app.scss';
 
 
 const composeEnhancers = composeWithDevTools({
   // Specify name here, actionsBlacklist, actionsCreators and other options if needed
 });
-const store = createStore(reducers, window.REDUX_STATE ? window.REDUX_STATE : {}, composeEnhancers(applyMiddleware(thunk)));
+
+
+const store = createStore(reducers, {}, composeEnhancers(applyMiddleware(thunk)));
+
+store.subscribe(() => {
+  saveState(store.getState());
+});
 
 const render = Component => {
   ReactDOM.hydrate(
@@ -32,8 +39,6 @@ const render = Component => {
 
 render(RenderRoutes);
 
-// Webpack Hot Module Replacement API
 if (module.hot) {
-  console.log('Accepting the updated printMe module!');
   module.hot.accept('./renderRoutes.js', () => { render(RenderRoutes) });
 }

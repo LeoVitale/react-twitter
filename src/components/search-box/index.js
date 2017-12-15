@@ -5,12 +5,13 @@ export default class SearchBox extends PureComponent {
   constructor(){
     super();
     this.state = {
-      value: 'IndigoFair'
+      value: ''
     }
     this.timerText = null;
   }
-
-
+  componentDidMount() {
+    this.setState({value:this.props.term})
+  }
   handleChange = event => {
     this.setState({ value: event.target.value });
   }

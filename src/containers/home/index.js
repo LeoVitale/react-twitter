@@ -2,17 +2,20 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Tweets from '../../components/tweets';
 import SearchBox from '../../components/search-box';
-import { fetchTweets, searchTweets } from '../../redux/modules/tweets';
+import { fetchTweets, searchTweets, fecthLocalTweets } from '../../redux/modules/tweets';
+import { loadState } from '../../utils/localStorage';
 import styles from './styles.scss';
 
 class Home extends Component {
-  constructor(){
+  constructor() {
     super();
     this.scrolling = null;
   }
 
   componentDidMount() {
     window.addEventListener('scroll', this.onScroll, false);
+    const persitedState = loadState();
+    persitedState && this.props.fecthLocalTweets(persitedState.tweets);
   }
 
   componentWillUnmount() {
@@ -37,13 +40,13 @@ class Home extends Component {
   }
 
   render() {
-    const { listTweets } = this.props;
+    const { listTweets, term } = this.props;
     return (
       <div className={styles.page}>
         <div className={styles.header}>
-          <SearchBox searchHandle={this.searchTweets}/>
+          <SearchBox term={term} searchHandle={this.searchTweets} />
         </div>
-        {listTweets ? <Tweets listTweets={listTweets}/> : 'loading'}
+        {listTweets ? <Tweets listTweets={listTweets} /> : 'loading'}
       </div>
     );
   }
@@ -51,15 +54,16 @@ class Home extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    listTweets: state.tweets.listTweets
+    listTweets: state.tweets.listTweets,
+    term: state.tweets.term
   }
 }
 
 function loadData(store) {
-  return store.dispatch(searchTweets('@IndigoFair'));
+  //return store.dispatch(searchTweets('@IndigoFair'));
 }
 
 export default {
   loadData,
-  component: connect(mapStateToProps, {fetchTweets, searchTweets})(Home)
+  component: connect(mapStateToProps, { fetchTweets, searchTweets, fecthLocalTweets })(Home)
 };
