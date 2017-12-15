@@ -9,9 +9,11 @@ export default class SearchBox extends PureComponent {
     }
     this.timerText = null;
   }
-  componentDidMount() {
-    this.setState({value:this.props.term})
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({value:nextProps.term})
   }
+
   handleChange = event => {
     this.setState({ value: event.target.value });
   }
