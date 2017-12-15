@@ -10,11 +10,15 @@ export default class RichText extends Component {
     rich: []
   };
 
+  static defaultProps = {
+    prop1: { foobar: 'foobar' }
+ };
+
   componentDidMount() {
     this.parseText(this.props.text);
   }
 
-  parseText = (text) => {
+  parseText = (text = '') => {
     let tempText = text;
     const richItems = [];
     const links = [];
