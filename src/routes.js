@@ -6,9 +6,5 @@ export default [{
     ...Home,
     path: '/',
     exact: true
-  },
-  {
-    ...UsersList,
-    path: '/users',
   }
 ];

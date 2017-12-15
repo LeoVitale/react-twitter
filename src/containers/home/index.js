@@ -33,7 +33,6 @@ class Home extends Component {
   }
 
   searchTweets = term => {
-    console.log(term);
     this.props.searchTweets(term);
   }
 
