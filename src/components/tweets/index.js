@@ -1,23 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Tweet from '../tweet';
 import styles from './styles.scss';
 
-export default class Tweets extends Component {
+const Tweets = props => {
+  return (
+    props.listTweets ?
+    <div className={styles.tweets}>
+      {
+        props.listTweets.map(tweet => {
+          return <Tweet key={tweet.id} {...tweet} />
+        })
+      }
+    </div>
+    : <div>loading</div>
+  )
+};
 
-  renderTweets(listTweets){
-    return listTweets.map(tweet => {
-      return <Tweet key={tweet.id} {...tweet} />
-    })
-  }
-
-  render() {
-    const {listTweets} = this.props;
-    return (
-      listTweets ?
-      <div className={styles.tweets}>
-        {this.renderTweets(listTweets)}
-      </div>
-      : <div>loading</div>
-    )
-  }
-}
+export default Tweets;

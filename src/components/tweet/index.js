@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { dateDiff } from '../../utils/formats';
 import RichText from '../rich-text';
 import styles from './styles.scss';
 
-class Tweet extends Component {
-
+class Tweet extends PureComponent {
 
   formatImage = (img) => {
     const formatedImage = img.replace('_normal', '_bigger');
@@ -20,7 +19,6 @@ class Tweet extends Component {
 
   render() {
     const { text, user, created_at } = this.props;
-    console.log(this.props);
     return (
       <div className={styles.tweet}>
         <div className={styles.image}>

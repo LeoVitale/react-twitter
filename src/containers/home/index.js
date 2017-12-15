@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Tweets from '../../components/tweets';
 import SearchBox from '../../components/search-box';
 import { fetchTweets } from '../../redux/modules/tweets';
+import styles from './styles.scss';
 
 class Home extends Component {
   constructor(){
@@ -34,8 +35,10 @@ class Home extends Component {
   render() {
     const { listTweets } = this.props;
     return (
-      <div>
-        <SearchBox/>
+      <div className={styles.page}>
+        <div className={styles.header}>
+          <SearchBox/>
+        </div>
         {listTweets ? <Tweets listTweets={listTweets}/> : 'loading'}
       </div>
     );
