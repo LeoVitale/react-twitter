@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { AppContainer } from 'react-hot-loader';
 import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction';
-import reducers from './redux/reducers';
+import reducers from './redux/modules';
 import RenderRoutes from './renderRoutes';
 
 

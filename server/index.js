@@ -59,7 +59,7 @@ app.get('/search', function (req, res) {
       if (response.data) {
         next_query = response.data.search_metadata.next_results;
         const tweets = formatTweets(response.data.statuses);
-        res.send(tweets);
+        res.send(response.data.statuses);
       } else {
         res.send('Nenhum resultado encontrado');
       }
@@ -75,7 +75,7 @@ app.post('/search', function (req, res) {
       if (response.data) {
         next_query = response.data.search_metadata.next_results;
         const tweets = formatTweets(response.data.statuses);
-        res.send(tweets);
+        res.send(response.data.statuses);
       } else {
         res.send('Nenhum resultado encontrado');
       }

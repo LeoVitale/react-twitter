@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Tweet from '../tweet';
 
-export default class ListTweets extends Component {
+export default class Tweets extends Component {
 
   renderTweets(listTweets){
     return listTweets.map(tweet => {

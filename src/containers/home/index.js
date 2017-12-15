@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ListTweets from '../../components/list-tweets';
-import { fetchTweets } from '../../redux/actions';
+import Tweets from '../../components/tweets';
+import SearchBox from '../../components/search-box';
+import { fetchTweets } from '../../redux/modules/tweets';
 
 class Home extends Component {
   constructor(){
@@ -34,8 +35,8 @@ class Home extends Component {
     const { listTweets } = this.props;
     return (
       <div>
-        Home {listTweets ? <ListTweets listTweets={listTweets}/> : 'loading'}
-        <button onClick={() => this.props.fetchTweets()}>ospa</button>
+        <SearchBox/>
+        {listTweets ? <Tweets listTweets={listTweets}/> : 'loading'}
       </div>
     );
   }
