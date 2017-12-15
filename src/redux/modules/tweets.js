@@ -1,9 +1,11 @@
 import axios from 'axios';
 
-export const FETCH_TWEETS = 'tweets/FETCH_TWEETS';
+const FETCH_TWEETS = 'tweets/FETCH_TWEETS';
+const SEARCH_TWEETS = 'tweets/SEARCH_TWEETS';
 
 const initialState = {
-  listTweets: []
+  listTweets: [],
+  term: ''
 }
 
 export default function reducer(state = initialState, action) {
@@ -11,6 +13,11 @@ export default function reducer(state = initialState, action) {
     case FETCH_TWEETS:
       return { ...state,
         listTweets: [...state.listTweets, ...action.payload.data]
+      };
+    case SEARCH_TWEETS:
+      return { ...state,
+        term: action.payload,
+        listTweets: []
       };
 
     default:
@@ -24,4 +31,22 @@ export const fetchTweets = () => async dispatch => {
     type: FETCH_TWEETS,
     payload: res
   });
+};
+
+export const searchTweets = term => async dispatch => {
+
+  dispatch({
+    type: SEARCH_TWEETS,
+    payload: term
+  });
+  const res = await axios.post('http://localhost:3000/search', {
+    term: term
+  }).catch(error => {
+    console.log(error);
+  });
+  dispatch({
+    type: FETCH_TWEETS,
+    payload: res
+  });
+
 };

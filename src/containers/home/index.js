@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Tweets from '../../components/tweets';
 import SearchBox from '../../components/search-box';
-import { fetchTweets } from '../../redux/modules/tweets';
+import { fetchTweets, searchTweets } from '../../redux/modules/tweets';
 import styles from './styles.scss';
 
 class Home extends Component {
@@ -32,12 +32,17 @@ class Home extends Component {
     }
   }
 
+  searchTweets = term => {
+    console.log(term);
+    this.props.searchTweets(term);
+  }
+
   render() {
     const { listTweets } = this.props;
     return (
       <div className={styles.page}>
         <div className={styles.header}>
-          <SearchBox/>
+          <SearchBox searchHandle={this.searchTweets}/>
         </div>
         {listTweets ? <Tweets listTweets={listTweets}/> : 'loading'}
       </div>
@@ -52,10 +57,10 @@ const mapStateToProps = (state) => {
 }
 
 function loadData(store) {
-  return store.dispatch(fetchTweets());
+  return store.dispatch(searchTweets('@IndigoFair'));
 }
 
 export default {
   loadData,
-  component: connect(mapStateToProps, {fetchTweets})(Home)
+  component: connect(mapStateToProps, {fetchTweets, searchTweets})(Home)
 };

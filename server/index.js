@@ -18,7 +18,7 @@ const compiler = webpack(config);
 const webpackConfig = require('../webpack.client');
 
 const app = express();
-let next_query = '?q=@carolmoreira3&result_type=recent&&include_entities=0';
+let next_query = '';
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -67,9 +67,12 @@ app.get('/search', function (req, res) {
 });
 
 app.post('/search', function (req, res) {
+
   console.log('====================================');
   console.log('app.post');
+  console.log(req.body);
   console.log('====================================');
+  next_query = `?q=${req.body.term ? req.body.term : ''}&result_type=recent&&include_entities=0`;
   searchTweets(next_query)
     .then(response => {
       if (response.data) {
@@ -77,8 +80,16 @@ app.post('/search', function (req, res) {
         const tweets = formatTweets(response.data.statuses);
         res.send(response.data.statuses);
       } else {
+        console.log('====================================');
+        console.log('Nenhum resultado encontrado');
+        console.log('====================================');
         res.send('Nenhum resultado encontrado');
       }
+    }).catch(error => {
+      console.log('====================================');
+      console.log(error.response.status);
+      res.status(400).sendStatus(error.response.status);
+      console.log('====================================');
     })
 });
 

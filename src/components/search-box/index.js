@@ -11,8 +11,9 @@ export default class SearchBox extends PureComponent {
   }
 
   handleKeyPress = event => {
+    const {searchHandle} = this.props;
     if (event.key === 'Enter') {
-      console.log('do validate');
+      searchHandle && searchHandle(this.state.value);
     }
   }
   render() {
