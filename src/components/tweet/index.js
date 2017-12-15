@@ -5,16 +5,14 @@ import styles from './styles.scss';
 
 class Tweet extends PureComponent {
 
-  formatImage = (img) => {
-    const formatedImage = img.replace('_normal', '_bigger');
-    return <img src={formatedImage} alt="" />
+  formatImage = (img = '') => {
+    return img.replace('_normal', '_bigger');
   }
 
-  formatTime = (dateTime) => {
+  formatTime = (dateTime = '') => {
     const Now = new Date();
     const TweetTime = new Date(dateTime);
-    let formatedTime = `${dateDiff('s', TweetTime, Now)}`;
-    return <div className={styles.time}>{formatedTime}</div>
+    return `${dateDiff('s', TweetTime, Now)}`;
   }
 
   render() {
@@ -22,7 +20,7 @@ class Tweet extends PureComponent {
     return (
       <div className={styles.tweet}>
         <div className={styles.image}>
-          {this.formatImage(user.profile_image_url)}
+          <img src={this.formatImage(user.profile_image_url)} alt={user} />
         </div>
         <div className={styles.textContent}>
           <div className={styles.accountGroup}>
@@ -31,7 +29,7 @@ class Tweet extends PureComponent {
               <span className={styles.userName}>@{user.screen_name}</span>
             </a>
           </div>
-          {this.formatTime(created_at)}
+          <div className={styles.time}>{this.formatTime(created_at)}</div>
           <RichText text={text} />
         </div>
       </div>

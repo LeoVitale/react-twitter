@@ -26,12 +26,19 @@ export default function reducer(state = initialState, action) {
 }
 
 export const fetchTweets = () => async dispatch => {
-  const res = await axios.get('http://localhost:3000/search');
-  dispatch({
-    type: FETCH_TWEETS,
-    payload: res
-  });
+
+  await axios.get('http://localhost:3000/search')
+    .then(response => {
+      dispatch({
+        type: FETCH_TWEETS,
+        payload: response
+      });
+    }).catch(error => {
+      console.log(error);
+    });;
+
 };
+
 
 export const searchTweets = term => async dispatch => {
 
@@ -39,14 +46,16 @@ export const searchTweets = term => async dispatch => {
     type: SEARCH_TWEETS,
     payload: term
   });
-  const res = await axios.post('http://localhost:3000/search', {
+  await axios.post('http://localhost:3000/search', {
     term: term
-  }).catch(error => {
+  }).then(response => {
+    dispatch({
+      type: FETCH_TWEETS,
+      payload: response
+    });
+  })
+  .catch(error => {
     console.log(error);
-  });
-  dispatch({
-    type: FETCH_TWEETS,
-    payload: res
   });
 
 };
