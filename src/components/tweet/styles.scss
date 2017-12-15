@@ -1,3 +1,49 @@
 .tweet {
+  position: relative;
+  flex: 1 1 auto;
   display: block;
+  background-color: #fff;
+  box-shadow: -1px 2px 5px 0px rgba(0, 0, 0, 0.75);
+  width: 400px;
+  min-height: 100px;
+  margin: 8px 20px;
+  .image {
+    position: absolute;
+    top: 20px;
+    left: -5px;
+    width: 60px;
+    img {
+      width: 100%;
+    }
+  }
+  .text-content {
+    padding: 16px 20px 20px 80px;
+  }
+  .time {
+    color: #666;
+    font-weight: bold;
+    font-size: .8rem;
+    margin-bottom: 10px;
+  }
+}
+
+.account-group {
+  .account-group-link {
+    text-decoration: none;
+    color: #333;
+    &:hover {
+      .full-name {
+        font-weight: bold;
+        color: #333;
+        text-decoration: underline;
+      }
+    }
+    .full-name {
+      font-weight: bold;
+    }
+    .user-name {
+      margin-left: 10px;
+      color: #666;
+    }
+  }
 }

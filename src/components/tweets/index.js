@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Tweet from '../tweet';
+import styles from './styles.scss';
 
 export default class Tweets extends Component {
 
@@ -13,7 +14,7 @@ export default class Tweets extends Component {
     const {listTweets} = this.props;
     return (
       listTweets ?
-      <div>
+      <div className={styles.tweets}>
         {this.renderTweets(listTweets)}
       </div>
       : <div>loading</div>

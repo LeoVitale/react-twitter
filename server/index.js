@@ -18,7 +18,7 @@ const compiler = webpack(config);
 const webpackConfig = require('../webpack.client');
 
 const app = express();
-let next_query = '?q=@carolmoreira3&result_type=recent';
+let next_query = '?q=@carolmoreira3&result_type=recent&&include_entities=0';
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({

@@ -9,6 +9,7 @@ import { AppContainer } from 'react-hot-loader';
 import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction';
 import reducers from './redux/modules';
 import RenderRoutes from './renderRoutes';
+import './sass/app.scss';
 
 
 const composeEnhancers = composeWithDevTools({

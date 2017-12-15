@@ -63,6 +63,7 @@ const config = {
                 minimize: false,
                 sourceMap: true,
                 localIdentName: '[name]__[local]--[hash:base64:5]',
+                camelCase: 'dashes',
                 modules: true
               }
             },
