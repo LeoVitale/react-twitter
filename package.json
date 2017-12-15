@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "run-p dev:* server",
+    "start": "run-p dev:* server",
     "server": "just-wait -p \"buildServer/server.js\"  && nodemon --watch build --exec \"node buildServer/server.js\"",
     "dev:build-server": "webpack --config webpack.server.js --watch",
     "dev:build-client": "webpack-dev-server --config webpack.client.js --watch",
@@ -33,7 +33,6 @@
     "npm-run-all": "^4.1.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "react-helmet": "^5.2.0",
     "react-hot-loader": "^3.1.2",
     "react-redux": "^5.0.6",
     "react-router-config": "^1.0.0-beta.4",
@@ -44,7 +43,6 @@
     "serialize-javascript": "^1.4.0",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4",
-    "webpack-merge": "^4.1.1",
     "webpack-node-externals": "^1.6.0"
   },
   "devDependencies": {
