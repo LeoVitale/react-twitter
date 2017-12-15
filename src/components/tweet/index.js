@@ -13,7 +13,7 @@ class Tweet extends PureComponent {
   formatTime = (dateTime) => {
     const Now = new Date();
     const TweetTime = new Date(dateTime);
-    let formatedTime = `${dateDiff('m', TweetTime, Now)}m ago`;
+    let formatedTime = `${dateDiff('s', TweetTime, Now)}`;
     return <div className={styles.time}>{formatedTime}</div>
   }
 

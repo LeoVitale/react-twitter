@@ -23,7 +23,9 @@ export default class SearchBox extends PureComponent {
     this.timerText = setTimeout(function() {
       (searchHandle && value !== '') && searchHandle(value);
     }, 1000);
+
     if (event.key === 'Enter') {
+      clearTimeout(this.timerText);
       (searchHandle && value !== '') && searchHandle(value);
     }
   }
