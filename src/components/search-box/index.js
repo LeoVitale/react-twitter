@@ -2,18 +2,29 @@ import React, { PureComponent } from 'react';
 import styles from './styles.scss';
 
 export default class SearchBox extends PureComponent {
-  state = {
-    value: 'IndigoFair'
+  constructor(){
+    super();
+    this.state = {
+      value: 'IndigoFair'
+    }
+    this.timerText = null;
   }
+
 
   handleChange = event => {
     this.setState({ value: event.target.value });
   }
 
-  handleKeyPress = event => {
+  handleKeyUp = event => {
     const {searchHandle} = this.props;
+    const {value} = this.state;
+    clearTimeout(this.timerText);
+
+    this.timerText = setTimeout(function() {
+      (searchHandle && value !== '') && searchHandle(value);
+    }, 1000);
     if (event.key === 'Enter') {
-      searchHandle && searchHandle(this.state.value);
+      (searchHandle && value !== '') && searchHandle(value);
     }
   }
   render() {
@@ -25,7 +36,7 @@ export default class SearchBox extends PureComponent {
         type="text"
         value={value}
         onChange={this.handleChange}
-        onKeyPress={this.handleKeyPress} />
+        onKeyUp={this.handleKeyUp} />
     )
   }
 }
