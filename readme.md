@@ -1,3 +1,10 @@
+## Commands to RUN
+```sh
+npm install
+npm start
+```
+Then open [http://localhost:3000/](http://localhost:3000/) to see your app.<br>
+
 ## Problem
 
 You are to create a simple React App that displays result from a twitter search
