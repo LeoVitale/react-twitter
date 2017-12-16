@@ -9,7 +9,7 @@ import { AppContainer } from 'react-hot-loader';
 import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction';
 import reducers from './redux/modules';
 import RenderRoutes from './renderRoutes';
-import {loadState, saveState} from './utils/localStorage';
+import {loadState, saveState, setClientNavigation, getClientNavigation } from './utils/localStorage';
 import './sass/app.scss';
 
 
@@ -18,7 +18,12 @@ const composeEnhancers = composeWithDevTools({
 });
 
 
-const store = createStore(reducers, {}, composeEnhancers(applyMiddleware(thunk)));
+
+const store = createStore(reducers, window.REDUX_STATE ? window.REDUX_STATE : {} , composeEnhancers(applyMiddleware(thunk)));
+const clientNavigation = getClientNavigation();
+
+const local = loadState();
+saveState((window.REDUX_STATE && !clientNavigation) ? window.REDUX_STATE : local);
 
 store.subscribe(() => {
   saveState(store.getState());

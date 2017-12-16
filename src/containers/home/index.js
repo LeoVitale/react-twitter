@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Tweets from '../../components/tweets';
 import SearchBox from '../../components/search-box';
 import { fetchTweets, searchTweets, fecthLocalTweets } from '../../redux/modules/tweets';
-import { loadState } from '../../utils/localStorage';
+import { loadState, setClientNavigation } from '../../utils/localStorage';
 import styles from './styles.scss';
 
 class Home extends Component {
@@ -37,6 +37,7 @@ class Home extends Component {
 
   searchTweets = term => {
     this.props.searchTweets(term);
+    setClientNavigation();
   }
 
   render() {
@@ -60,7 +61,10 @@ const mapStateToProps = (state) => {
 }
 
 function loadData(store) {
-  //return store.dispatch(searchTweets('@IndigoFair'));
+  console.log('====================================');
+  console.log('server');
+  console.log('====================================');
+  return store.dispatch(searchTweets('@IndigoFair'));
 }
 
 export default {

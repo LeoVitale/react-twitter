@@ -19,3 +19,25 @@ export const saveState = state => {
     //Ignore write errors
   }
 }
+
+export const setClientNavigation = () => {
+  try {
+    localStorage.setItem('client', true);
+  } catch (err) {
+    //Ignore write errors
+  }
+}
+
+export const getClientNavigation = () => {
+  try {
+    const serializedState = localStorage.getItem('client');
+    if (serializedState === null) {
+      return undefined;
+    }
+    return serializedState;
+  } catch (err) {
+    return undefined;
+  }
+}
+
+
