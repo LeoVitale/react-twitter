@@ -8,25 +8,24 @@ export const loadState = () => {
   } catch (err) {
     return undefined;
   }
-}
-
+};
 
 export const saveState = state => {
   try {
     const serializedState = JSON.stringify(state).trim();
     localStorage.setItem('state', serializedState);
   } catch (err) {
-    //Ignore write errors
+    // Ignore write errors
   }
-}
+};
 
 export const setClientNavigation = () => {
   try {
     localStorage.setItem('client', true);
   } catch (err) {
-    //Ignore write errors
+    // Ignore write errors
   }
-}
+};
 
 export const getClientNavigation = () => {
   try {
@@ -38,6 +37,4 @@ export const getClientNavigation = () => {
   } catch (err) {
     return undefined;
   }
-}
-
-
+};

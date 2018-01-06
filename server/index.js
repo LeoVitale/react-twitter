@@ -1,98 +1,91 @@
-import express from 'express';
-import React from 'react';
-import { renderToString } from 'react-dom/server';
-import { matchRoutes } from 'react-router-config';
-import bodyParser from 'body-parser';
-import {searchTweets, formatTweets} from './twitter';
-import renderer from './renderer.js';
-import Routes from '../src/routes';
-import createStore from '../src/redux/store/createStore';
-import { error } from 'util';
+require('colors');
+const express = require('express');
+const webpack = require('webpack');
 
-import webpack from 'webpack';
-import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
-import config from '../webpack.client';
-const compiler = webpack(config);
+const noFavicon = require('express-no-favicons');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+const webpackHotServerMiddleware = require('webpack-hot-server-middleware');
 
-const webpackConfig = require('../webpack.client');
+const clientConfig = require('../webpack/client.dev');
+const serverConfig = require('../webpack/server.dev');
+const clientConfigProd = require('../webpack/client.prod');
+const serverConfigProd = require('../webpack/server.prod');
+
+const twitter = require('./twitter');
+
+const publicPath = clientConfig.output.publicPath;
+const outputPath = clientConfig.output.path;
+const DEV = process.env.NODE_ENV === 'development';
 
 const app = express();
-let next_query = '';
+app.use(noFavicon());
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+let isBuilt = false;
 
-const options = {
-  quiet: true,
-  noInfo: true,
-  hot: true,
-  host: "localhost",
-  stats: { colors: true }
-};
-
-app.use(webpackDevMiddleware(compiler, options));
-app.use(webpackHotMiddleware(compiler));
-
-app.use(express.static('buildClient'));
-
-app.get('/', (req, res) => {
-  const store = createStore();
-  const promises = matchRoutes(Routes, req.path).map(({ route }) => {
-    return route.loadData ? route.loadData(store) : null;
+const done = () =>
+  !isBuilt &&
+  app.listen(3000, () => {
+    isBuilt = true;
+    console.log('BUILD COMPLETE -- Listening @ http://localhost:3000'.magenta);
   });
 
-  Promise.all(promises).then(() => {
-    res.send(renderer(req, store));
+if (DEV) {
+  const compiler = webpack([clientConfig, serverConfig]);
+  const clientCompiler = compiler.compilers[0];
+  const options = { publicPath, stats: { colors: true } };
+
+  app.use(webpackDevMiddleware(compiler, options));
+  app.use(webpackHotMiddleware(clientCompiler));
+  app.use(webpackHotServerMiddleware(compiler));
+
+  compiler.plugin('done', done);
+} else {
+  webpack([clientConfigProd, serverConfigProd]).run((err, stats) => {
+    const clientStats = stats.toJson().children[0];
+    const serverRender = require('../buildServer/main.js').default;
+    app.use(publicPath, express.static(outputPath));
+    app.use(serverRender({ clientStats }));
+
+    done();
   });
+}
 
-});
+let nextQuery = '';
 
-app.get('/search', function (req, res) {
-  console.log('====================================');
-  console.log('app.get');
-  console.log('====================================');
-  searchTweets(next_query)
+app.get('/search', (req, res) => {
+  twitter
+    .searchTweets(nextQuery)
     .then(response => {
       if (response.data) {
-        next_query = response.data.search_metadata.next_results;
-        const tweets = formatTweets(response.data.statuses);
+        nextQuery = response.data.search_metadata.next_results;
+        const tweets = twitter.formatTweets(response.data.statuses);
         res.send(response.data.statuses);
       } else {
         res.send('Nenhum resultado encontrado');
       }
     })
-});
-
-app.post('/search', function (req, res) {
-
-  console.log('====================================');
-  console.log('app.post');
-  console.log(req.body);
-  console.log('====================================');
-  next_query = `?q=${req.body.term ? req.body.term : ''}&result_type=recent&&include_entities=0`;
-  searchTweets(next_query)
-    .then(response => {
-      if (response.data) {
-        next_query = response.data.search_metadata.next_results;
-        const tweets = formatTweets(response.data.statuses);
-        res.send(response.data.statuses);
-      } else {
-        console.log('====================================');
-        console.log('Nenhum resultado encontrado');
-        console.log('====================================');
-        res.send('Nenhum resultado encontrado');
-      }
-    }).catch(error => {
-      console.log('====================================');
-      console.log(error.response.status);
+    .catch(error => {
       res.status(400).sendStatus(error.response.status);
-      console.log('====================================');
-    })
+    });
 });
 
-app.listen(3000, () => {
-  console.log('listening on port 3000');
+app.post('/search', (req, res) => {
+  nextQuery = `?q=${
+    req.body.term ? req.body.term : ''
+  }&result_type=recent&&include_entities=0`;
+  twitter
+    .searchTweets(nextQuery)
+    .then(response => {
+      if (response.data) {
+        nextQuery = response.data.search_metadata.next_results;
+        const tweets = twitter.formatTweets(response.data.statuses);
+        res.send(response.data.statuses);
+      } else {
+        res.send('Nenhum resultado encontrado');
+      }
+    })
+    .catch(error => {
+      res.status(400).sendStatus(error.response.status);
+    });
 });

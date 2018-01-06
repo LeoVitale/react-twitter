@@ -2,16 +2,16 @@ import React, { PureComponent } from 'react';
 import styles from './styles.scss';
 
 export default class SearchBox extends PureComponent {
-  constructor(){
+  constructor() {
     super();
     this.state = {
       value: ''
-    }
+    };
     this.timerText = null;
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({value:nextProps.term})
+    this.setState({ value: nextProps.term });
   }
 
   handleChange = event => {
@@ -19,17 +19,17 @@ export default class SearchBox extends PureComponent {
   }
 
   handleKeyUp = event => {
-    const {searchHandle} = this.props;
-    const {value} = this.state;
+    const { searchHandle } = this.props;
+    const { value } = this.state;
     clearTimeout(this.timerText);
 
-    this.timerText = setTimeout(function() {
-      (searchHandle && value !== '') && searchHandle(value);
+    this.timerText = setTimeout(() => {
+      searchHandle && value !== '' && searchHandle(value);
     }, 1000);
 
     if (event.key === 'Enter') {
       clearTimeout(this.timerText);
-      (searchHandle && value !== '') && searchHandle(value);
+      searchHandle && value !== '' && searchHandle(value);
     }
   }
   render() {
@@ -41,7 +41,8 @@ export default class SearchBox extends PureComponent {
         type="text"
         value={value}
         onChange={this.handleChange}
-        onKeyUp={this.handleKeyUp} />
-    )
+        onKeyUp={this.handleKeyUp}
+      />
+    );
   }
 }

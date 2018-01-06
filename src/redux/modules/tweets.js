@@ -7,16 +7,18 @@ const SEARCH_TWEETS = 'tweets/SEARCH_TWEETS';
 const initialState = {
   listTweets: [],
   term: ''
-}
+};
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case FETCH_TWEETS:
-      return { ...state,
+      return {
+        ...state,
         listTweets: [...state.listTweets, ...action.payload.data]
       };
     case SEARCH_TWEETS:
-      return { ...state,
+      return {
+        ...state,
         term: action.payload,
         listTweets: []
       };
@@ -27,37 +29,10 @@ export default function reducer(state = initialState, action) {
   }
 }
 
-export const fetchTweets = () => async dispatch => {
-
-  await axios.get('http://localhost:3000/search')
+export const fetchTweets = () => dispatch => {
+  axios
+    .get('http://localhost:3005/search')
     .then(response => {
-      dispatch({
-        type: FETCH_TWEETS,
-        payload: response
-      });
-    }).catch(error => {
-      console.log(error);
-    });;
-
-};
-
-export const fecthLocalTweets = tweets => dispatch => {
-  dispatch({
-    type: FETCH_LOCAL_TWEETS,
-    payload: tweets
-  });
-}
-
-
-export const searchTweets = term => async dispatch => {
-
-  dispatch({
-    type: SEARCH_TWEETS,
-    payload: term
-  });
-  await axios.post('http://localhost:3000/search', {
-      term: term
-    }).then(response => {
       dispatch({
         type: FETCH_TWEETS,
         payload: response
@@ -66,5 +41,32 @@ export const searchTweets = term => async dispatch => {
     .catch(error => {
       console.log(error);
     });
+};
 
+export const fecthLocalTweets = tweets => dispatch => {
+  dispatch({
+    type: FETCH_LOCAL_TWEETS,
+    payload: tweets
+  });
+};
+
+export const searchTweets = term => dispatch => {
+  console.log(term);
+  dispatch({
+    type: SEARCH_TWEETS,
+    payload: term
+  });
+  axios
+    .post('http://localhost:3005/search', {
+      term
+    })
+    .then(response => {
+      dispatch({
+        type: FETCH_TWEETS,
+        payload: response
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
 };

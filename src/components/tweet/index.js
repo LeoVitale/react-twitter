@@ -4,10 +4,7 @@ import RichText from '../rich-text';
 import styles from './styles.scss';
 
 class Tweet extends PureComponent {
-
-  formatImage = (img = '') => {
-    return img.replace('_normal', '_bigger');
-  }
+  formatImage = (img = '') => img.replace('_normal', '_bigger')
 
   formatTime = (dateTime = '') => {
     const Now = new Date();
@@ -24,7 +21,11 @@ class Tweet extends PureComponent {
         </div>
         <div className={styles.textContent}>
           <div className={styles.accountGroup}>
-            <a className={styles.accountGroupLink} href={`https://twitter.com/${user.screen_name}`} target="blank">
+            <a
+              className={styles.accountGroupLink}
+              href={`https://twitter.com/${user.screen_name}`}
+              target="blank"
+            >
               <span className={styles.fullName}>{user.name}</span>
               <span className={styles.userName}>@{user.screen_name}</span>
             </a>
@@ -33,7 +34,7 @@ class Tweet extends PureComponent {
           <RichText text={text} />
         </div>
       </div>
-    )
+    );
   }
 }
 

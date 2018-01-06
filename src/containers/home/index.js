@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Tweets from '../../components/tweets';
 import SearchBox from '../../components/search-box';
-import { fetchTweets, searchTweets, fecthLocalTweets } from '../../redux/modules/tweets';
+import {
+  fetchTweets,
+  searchTweets,
+  fecthLocalTweets
+} from '../../redux/modules/tweets';
 import { loadState, setClientNavigation } from '../../utils/localStorage';
 import styles from './styles.scss';
 
@@ -25,10 +29,9 @@ class Home extends Component {
   onScroll = () => {
     window.clearTimeout(this.scrolling);
     if (
-      (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 500) &&
+      window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 &&
       this.props.listTweets.length
     ) {
-
       this.scrolling = setTimeout(() => {
         this.props.fetchTweets();
       }, 60);
@@ -53,21 +56,13 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    listTweets: state.tweets.listTweets,
-    term: state.tweets.term
-  }
-}
+const mapStateToProps = state => ({
+  listTweets: state.tweets.listTweets,
+  term: state.tweets.term
+});
 
-function loadData(store) {
-  console.log('====================================');
-  console.log('server');
-  console.log('====================================');
-  return store.dispatch(searchTweets('@IndigoFair'));
-}
-
-export default {
-  loadData,
-  component: connect(mapStateToProps, { fetchTweets, searchTweets, fecthLocalTweets })(Home)
-};
+export default connect(mapStateToProps, {
+  fetchTweets,
+  searchTweets,
+  fecthLocalTweets
+})(Home);
