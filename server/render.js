@@ -7,8 +7,10 @@ import { Provider } from 'react-redux';
 import createStore from '../src/redux/store/createStore';
 import App from '../src/components/App';
 
+const store = createStore();
+
 export default ({ clientStats }) => (req, res) => {
-  const store = createStore();
+  const initialState = JSON.stringify(store.getState());
   const history = createHistory({ initialEntries: [req.path] });
   const app = ReactDOM.renderToString(<Provider store={store}>
     <App history={history} />
@@ -23,11 +25,6 @@ export default ({ clientStats }) => (req, res) => {
     { chunkNames }
   );
 
-  console.log('PATH', req.path);
-  console.log('DYNAMIC CHUNK NAMES RENDERED', chunkNames);
-  console.log('SCRIPTS SERVED', scripts);
-  console.log('STYLESHEETS SERVED', stylesheets);
-
   res.send(`<!doctype html>
       <html>
         <head>
@@ -37,6 +34,9 @@ export default ({ clientStats }) => (req, res) => {
         </head>
         <body>
           <div id="root">${app}</div>
+          <script>
+            window.__INITIAL_STATE__ = ${initialState}
+          </script>
           ${cssHash}
           ${js}
         </body>

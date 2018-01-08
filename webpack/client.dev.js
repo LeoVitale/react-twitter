@@ -7,8 +7,10 @@ module.exports = {
   name: 'client',
   target: 'web',
   // devtool: 'source-map',
-  devtool: 'eval',
+  devtool: 'cheap-module-source-map',
   entry: [
+    'fetch-everywhere',
+    'babel-polyfill',
     'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
     'react-hot-loader/patch',
     path.resolve(__dirname, '../src/index.js')

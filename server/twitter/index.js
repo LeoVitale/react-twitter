@@ -20,14 +20,11 @@ function generateToken() {
       },
       body: 'grant_type=client_credentials'
     },
-    (err, resp, body) => {
-      console.dir(body);
-    }
+    (err, resp, body) => {}
   );
 }
 
 function searchTweets(next_query = '') {
-  console.log(`${url}${next_query}`);
   return axios.get(`${url}${next_query}`, {
     headers: {
       Authorization: `Bearer ${token}`

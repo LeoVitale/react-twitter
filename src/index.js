@@ -6,8 +6,7 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction';
 import { AppContainer } from 'react-hot-loader';
-import reducers from './redux/modules';
-// import App from './containers/home';
+import createReducer from './redux/modules';
 import App from './components/App';
 import {
   loadState,
@@ -22,14 +21,16 @@ const composeEnhancers = composeWithDevTools({
 });
 
 const store = createStore(
-  reducers,
-  window.REDUX_STATE ? window.REDUX_STATE : {},
+  createReducer(),
+  window.__INITIAL_STATE__ ? window.__INITIAL_STATE__ : {},
   composeEnhancers(applyMiddleware(thunk))
 );
 const clientNavigation = getClientNavigation();
 
 const local = loadState();
-saveState(window.REDUX_STATE && !clientNavigation ? window.REDUX_STATE : local);
+saveState(window.__INITIAL_STATE__ && !clientNavigation
+  ? window.__INITIAL_STATE__
+  : local);
 
 store.subscribe(() => {
   saveState(store.getState());
@@ -47,11 +48,11 @@ const render = App =>
     document.getElementById('root')
   );
 
-if (process.env.NODE_ENV === 'development' && module.hot) {
+render(App);
+
+if (module.hot && process.env.NODE_ENV === 'development') {
   module.hot.accept('./components/App.js', () => {
     const App = require('./components/App').default;
     render(App);
   });
 }
-
-render(App);

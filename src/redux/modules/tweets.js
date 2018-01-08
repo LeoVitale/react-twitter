@@ -51,7 +51,6 @@ export const fecthLocalTweets = tweets => dispatch => {
 };
 
 export const searchTweets = term => dispatch => {
-  console.log(term);
   dispatch({
     type: SEARCH_TWEETS,
     payload: term

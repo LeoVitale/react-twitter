@@ -27,8 +27,8 @@ module.exports = {
   name: 'server',
   target: 'node',
   // devtool: 'source-map',
-  devtool: 'eval',
-  entry: [entry],
+  devtool: 'cheap-module-source-map',
+  entry: ['babel-polyfill', 'fetch-everywhere', entry],
   externals,
   output: {
     path: output,

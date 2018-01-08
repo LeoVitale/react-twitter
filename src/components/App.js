@@ -61,7 +61,7 @@ class App extends Component {
 
   render() {
     const { index, done, loading } = this.state;
-    const page = pages[index];
+    const page = pages[index] ? pages[index] : 'home';
     return (
       <div>
         <UniversalComponent

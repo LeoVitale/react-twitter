@@ -28,7 +28,6 @@ app.get('/search', (req, res) => {
       if (response.data) {
         nextQuery = response.data.search_metadata.next_results;
         const tweets = twitter.formatTweets(response.data.statuses);
-        console.log(tweets);
         res.send(response.data.statuses);
       } else {
         res.send('Nenhum resultado encontrado');
@@ -40,7 +39,6 @@ app.get('/search', (req, res) => {
 });
 
 app.post('/search', (req, res) => {
-  console.log(req.body.term);
   nextQuery = `?q=${
     req.body ? req.body.term : ''
   }&result_type=recent&&include_entities=0`;
