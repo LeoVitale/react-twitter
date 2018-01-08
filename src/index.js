@@ -7,7 +7,8 @@ import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction';
 import { AppContainer } from 'react-hot-loader';
 import createReducer from './redux/modules';
-import App from './components/App';
+import Home from './containers/home';
+
 import {
   loadState,
   saveState,
@@ -42,17 +43,17 @@ const render = App =>
   ReactDOM.hydrate(
     <AppContainer>
       <Provider store={store}>
-        <App history={history} />
+        <App />
       </Provider>
     </AppContainer>,
     document.getElementById('root')
   );
 
-render(App);
+render(Home);
 
 if (module.hot && process.env.NODE_ENV === 'development') {
-  module.hot.accept('./components/App.js', () => {
-    const App = require('./components/App').default;
-    render(App);
+  module.hot.accept('./containers/home/index.js', () => {
+    const Home = require('./containers/home').default;
+    render(Home);
   });
 }

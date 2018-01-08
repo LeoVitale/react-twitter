@@ -5,7 +5,7 @@ import { flushChunkNames } from 'react-universal-component/server';
 import flushChunks from 'webpack-flush-chunks';
 import { Provider } from 'react-redux';
 import createStore from '../src/redux/store/createStore';
-import App from '../src/components/App';
+import Home from '../src/containers/home';
 
 const store = createStore();
 
@@ -13,7 +13,7 @@ export default ({ clientStats }) => (req, res) => {
   const initialState = JSON.stringify(store.getState());
   const history = createHistory({ initialEntries: [req.path] });
   const app = ReactDOM.renderToString(<Provider store={store}>
-    <App history={history} />
+    <Home />
                                       </Provider>);
 
   const chunkNames = flushChunkNames();
